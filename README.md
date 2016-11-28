@@ -1,2 +1,2 @@
-# reader
+# Reader
 Ebook reader
