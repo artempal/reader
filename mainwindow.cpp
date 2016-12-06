@@ -38,10 +38,22 @@ void MainWindow::get_book()
 {
     QFile file(file_name); // создаем объект класса QFile
     if (!file.open(QIODevice::ReadOnly)) // проверяем, возможно ли открыть наш файл для чтения
-    return; // если это сделать невозможно, то завершаем функцию
-    QByteArray data = file.readAll(); //читаем весь текст книги в переменную
-    QString book_text = (QString) data; //преобразуем в QString
-    ui->book_text->setText(book_text); //выводим первую страницу (правда я пока не понял, как выводить определенное кол-во строк, поэтому вывел всю книгу, тут надо думать
+    {
+        qDebug() << "Ошибка чтения файла";
+        return; // если это сделать невозможно, то завершаем функцию
+    }
+    QTextStream stream(&file);
+    QString str;
+    while(!stream.atEnd())
+    {
+    // str = stream.readLine();
+      ui->book_text->setText(stream.readLine(100));
+
+    }
+    file.close();
+  /*  QByteArray data = file.readAll(); //читаем весь текст книги в переменную
+    QString book_text = (QString) data;*/ //преобразуем в QString
+   // ui->book_text->setText(book_text); //выводим первую страницу (правда я пока не понял, как выводить определенное кол-во строк, поэтому вывел всю книгу, тут надо думать
     ui->next_btn->show(); //делаем активной кнопку вперед
 }
 void MainWindow::next_page()
