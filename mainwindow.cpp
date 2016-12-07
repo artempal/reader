@@ -34,7 +34,7 @@ void MainWindow::dir_open()
 {
     file_dir = QFileDialog::getExistingDirectory(0, "Выбрать папку с книгами", "");
 }
-void MainWindow::get_book()
+void MainWindow::get_book() // Функция чтения книги
 {
     QFile file(file_name); // создаем объект класса QFile
     if (!file.open(QIODevice::ReadOnly)) // проверяем, возможно ли открыть наш файл для чтения
@@ -44,23 +44,31 @@ void MainWindow::get_book()
     }
     QTextStream stream(&file);
     QString str;
-    while(!stream.atEnd())
+    int nline = 1, MaxLine = 25;
+    while( nline < MaxLine )
     {
-    // str = stream.readLine();
-      ui->book_text->setText(stream.readLine(100));
-
+     str = stream.readLine(125);// считывание строки
+     ui->book_text->append(str);// вывод строки на экран
+            if(stream.atEnd())
+            {
+                ui->book_text->setTextColor(Qt::red);
+                ui->book_text->append( "Конец книги");
+                ui->book_text->setTextColor(Qt::black);
+                ui->next_btn->isEnabled();
+            }
+        nline++;
     }
+   // file.pos();
     file.close();
-  /*  QByteArray data = file.readAll(); //читаем весь текст книги в переменную
-    QString book_text = (QString) data;*/ //преобразуем в QString
-   // ui->book_text->setText(book_text); //выводим первую страницу (правда я пока не понял, как выводить определенное кол-во строк, поэтому вывел всю книгу, тут надо думать
     ui->next_btn->show(); //делаем активной кнопку вперед
+
 }
 void MainWindow::next_page()
 {
+    ui->book_text->clear();
 
 }
 void MainWindow::prev_page()
 {
-
+    ui->book_text->clear();
 }
