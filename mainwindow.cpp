@@ -156,9 +156,8 @@ void MainWindow::prev_page()
 
 void MainWindow :: OpenMyPage()
 {
-    Dialog *mwd = new Dialog(this);
+    Dialog *mwd = new Dialog(this,file_name); //передадим имя файла в диалог
     mwd->show();
-
 }
 
 /*
@@ -178,7 +177,6 @@ void MainWindow:: OpenPage()
     if(Page == 1 ) ui->prev_btn->setEnabled(false);
     while( nline <= Page * MaxLine )
     {
-
      str = stream.readLine(125);// считывание строки
      if(nline <= (Page - 1) * MaxLine )
      {
@@ -198,6 +196,5 @@ void MainWindow:: OpenPage()
     }
     file.close();
     qDebug()<<Page;
-
 }
 */
