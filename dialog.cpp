@@ -4,12 +4,12 @@
 int Page2 = 1;
 int const MaxLine2 = 25;
 
-Dialog::Dialog(QWidget *parent, QString in_file_name) :
+Dialog::Dialog(QWidget *parent, QString *in_file_name) :
     QDialog(parent),
     ui2(new Ui::Dialog)
 {
-    file_name = in_file_name; //принимаем имя файла из главного окна
-    qDebug() << file_name;
+    //file_name = in_file_name; //принимаем имя файла из главного окна
+    qDebug() << *in_file_name;
     ui2->setupUi(this);
     connect(ui2->Close,SIGNAL(clicked()),this, SLOT (close()));
     connect(ui2->spinBox,SIGNAL(valueChanged(Page)),this, SLOT (OpenPage()));

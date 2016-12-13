@@ -156,7 +156,7 @@ void MainWindow::prev_page()
 
 void MainWindow :: OpenMyPage()
 {
-    Dialog *mwd = new Dialog(this,file_name); //передадим имя файла в диалог
+    Dialog *mwd = new Dialog(this,&file_name); //передадим имя файла в диалог
     mwd->show();
 }
 
