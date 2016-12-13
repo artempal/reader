@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>920</width>
-    <height>670</height>
+    <width>926</width>
+    <height>683</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,17 +19,20 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTextEdit" name="book_text">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>110</x>
-      <y>60</y>
+      <y>40</y>
       <width>711</width>
-      <height>361</height>
+      <height>541</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Vladimir Script</family>
+      <family>Viner Hand ITC</family>
       <pointsize>10</pointsize>
       <weight>75</weight>
       <italic>true</italic>
@@ -37,7 +40,7 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">
+     <string notr="true">color: rgb(0, 0, 0);
 background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
@@ -67,11 +70,11 @@ background-color: rgb(255, 255, 255);</string>
      <string>-&gt;</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>440</y>
+      <x>420</x>
+      <y>590</y>
       <width>111</width>
       <height>22</height>
      </rect>
@@ -97,6 +100,9 @@ background-color: rgb(255, 255, 255);</string>
      </item>
      <item>
       <widget class="QSpinBox" name="PageNumber">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
@@ -109,10 +115,13 @@ background-color: rgb(255, 255, 255);</string>
         <string notr="true">color: rgb(0, 170, 0)</string>
        </property>
        <property name="minimum">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="maximum">
         <number>9999</number>
+       </property>
+       <property name="value">
+        <number>0</number>
        </property>
       </widget>
      </item>
@@ -124,7 +133,7 @@ background-color: rgb(255, 255, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>920</width>
+     <width>926</width>
      <height>21</height>
     </rect>
    </property>
@@ -132,7 +141,6 @@ background-color: rgb(255, 255, 255);</string>
     <property name="title">
      <string>Файл</string>
     </property>
-    <addaction name="open_book"/>
     <addaction name="open_dir"/>
    </widget>
    <addaction name="menu"/>
@@ -144,6 +152,8 @@ background-color: rgb(255, 255, 255);</string>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="open_book"/>
+   <addaction name="DesiredPage"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="open_book">
@@ -154,6 +164,11 @@ background-color: rgb(255, 255, 255);</string>
   <action name="open_dir">
    <property name="text">
     <string>Открыть папку</string>
+   </property>
+  </action>
+  <action name="DesiredPage">
+   <property name="text">
+    <string>Открыть страницу №</string>
    </property>
   </action>
  </widget>

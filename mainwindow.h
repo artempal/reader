@@ -20,7 +20,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void get_book(); //функция чтения из книги
-
+    int Page = 1;
+    int const MaxLine = 25;
 private:
     QString file_name; //имя открытого файла
     QString file_dir; //имя папки
@@ -31,6 +32,13 @@ private slots:
     void book_open(); //функция открытия книги
     void prev_page(); //функции кнопок
     void next_page();
+  //  void OpenPage();
+    void OpenMyPage();
+
+   /* void MakeBookmark();// сделать закладку
+    void SeeBookmarks();// посмотреть закладки
+    void SaveLastPlaceReading();// запомнить последнее место чтения
+    void ContinueReading();// продолжить чтение */
 };
 
 #endif // MAINWINDOW_H
