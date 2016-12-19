@@ -12,7 +12,7 @@ Dialog::Dialog(QWidget *parent, QString *in_file_name) :
     qDebug() << *in_file_name;
     ui2->setupUi(this);
     connect(ui2->Close,SIGNAL(clicked()),this, SLOT (close()));
-    connect(ui2->spinBox,SIGNAL(valueChanged(Page)),this, SLOT (OpenPage()));
+    connect(ui2->spinBox,SIGNAL(valueChanged(int)),this, SLOT (OpenPage(int)));
 }
 
 Dialog::~Dialog()
@@ -20,9 +20,9 @@ Dialog::~Dialog()
     delete ui2;
 }
 
-void Dialog:: OpenPage()
+void Dialog:: OpenPage(int value)
 {
-
+    emit sendData(value);
 }
 
 void Dialog:: CountPages()

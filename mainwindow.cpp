@@ -157,6 +157,7 @@ void MainWindow::prev_page()
 void MainWindow :: OpenMyPage()
 {
     Dialog *mwd = new Dialog(this,&file_name); //передадим имя файла в диалог
+    connect(mwd,SIGNAL(sendData(int)),this,SLOT(OpenPage(int))); //ловим сигнал обновления из диалога ввода и запускаем обработку данных
     mwd->show();
 }
 
@@ -198,3 +199,7 @@ void MainWindow:: OpenPage()
     qDebug()<<Page;
 }
 */
+void MainWindow:: OpenPage(int num)
+{
+    qDebug() << num;
+}

@@ -32,7 +32,7 @@ private slots:
     void book_open(); //функция открытия книги
     void prev_page(); //функции кнопок
     void next_page();
-  //  void OpenPage();
+    void OpenPage(int);
     void OpenMyPage();
 
    /* void MakeBookmark();// сделать закладку

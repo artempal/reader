@@ -26,7 +26,10 @@ private:
     Ui::Dialog *ui2;
 private slots:
     void CountPages(); // колличество страниц в книге
-    void OpenPage(); // открыть определенную страницу
+    void OpenPage(int); // открыть определенную страницу
+    //void onSendData();
+signals:
+    void sendData(int);
 };
 
 #endif // DIALOG_H
