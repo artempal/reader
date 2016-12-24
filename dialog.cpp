@@ -1,6 +1,7 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 
+
 int Page2 = 1;
 int const MaxLine2 = 25;
 
@@ -8,11 +9,14 @@ Dialog::Dialog(QWidget *parent, QString *in_file_name) :
     QDialog(parent),
     ui2(new Ui::Dialog)
 {
-    //file_name = in_file_name; //принимаем имя файла из главного окна
-    qDebug() << *in_file_name;
+    file_name = *in_file_name; //принимаем имя файла из главного окна
+     qDebug() << file_name;
     ui2->setupUi(this);
     connect(ui2->Close,SIGNAL(clicked()),this, SLOT (close()));
-    connect(ui2->spinBox,SIGNAL(valueChanged(int)),this, SLOT (OpenPage(int)));
+    //connect(ui2->spinBox,SIGNAL(valueChanged(int)),this, SLOT (OpenPage(int)));
+    connect(ui2->Ok,SIGNAL(clicked()),this,SLOT(SendPage()));
+
+    CountPages();
 }
 
 Dialog::~Dialog()
@@ -20,10 +24,13 @@ Dialog::~Dialog()
     delete ui2;
 }
 
-void Dialog:: OpenPage(int value)
+void Dialog:: SendPage()
 {
-    emit sendData(value);
+
+    emit sendData(ui2->spinBox->value());
+    close();
 }
+
 
 void Dialog:: CountPages()
 {
@@ -36,17 +43,18 @@ void Dialog:: CountPages()
     QTextStream stream(&file);
     QString str;
     int nline = 1, Pages = 1;
-    while( stream.atEnd() )
+    while( !stream.atEnd() )
     {
      str = stream.readLine(125);// считывание строки
-            if(stream.atEnd())   break;
+            if(stream.atEnd())   break;// завершаем цикл, если достигнут конец файла
      nline++;
     }
     file.close();
     if(nline % MaxLine2  != 0)
-        Pages = MaxLine2 + 1;
+        Pages = (nline / MaxLine2) + 1;
     else
-        Pages = nline;
-    ui2->textEdit->append(QString :: number(Pages) );
+        Pages = nline / MaxLine2;
+    ui2->AllPages->setText(QString :: number(Pages) );
 
 }
+

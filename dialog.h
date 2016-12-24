@@ -24,12 +24,12 @@ public:
 private:
     QString file_name;
     Ui::Dialog *ui2;
+     void CountPages(); // колличество страниц в книге
 private slots:
-    void CountPages(); // колличество страниц в книге
-    void OpenPage(int); // открыть определенную страницу
-    //void onSendData();
+    void SendPage();
 signals:
     void sendData(int);
+
 };
 
 #endif // DIALOG_H

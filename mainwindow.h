@@ -19,23 +19,24 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void get_book(); //функция чтения из книги
     int Page = 1;
     int const MaxLine = 25;
+    int Mark = 1;
 private:
     QString file_name; //имя открытого файла
     QString file_dir; //имя папки
     QString book_text; //текст открытой книги
     Ui::MainWindow *ui;
+    int BookMark[200];
 private slots:
     void dir_open(); //функция открытия папки
     void book_open(); //функция открытия книги
     void prev_page(); //функции кнопок
     void next_page();
-    void OpenPage(int);
+    void OpenPage(int num );
     void OpenMyPage();
-
-   /* void MakeBookmark();// сделать закладку
+   // void MakeBookmark();
+   /*
     void SeeBookmarks();// посмотреть закладки
     void SaveLastPlaceReading();// запомнить последнее место чтения
     void ContinueReading();// продолжить чтение */
