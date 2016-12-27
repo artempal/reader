@@ -152,6 +152,7 @@ void Tree::FillTree()
                     }
                      i = 0;
                 }
+        c++;
     }
     delete [] author2;
     delete [] name2;
