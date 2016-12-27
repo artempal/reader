@@ -35,6 +35,8 @@ private slots:
     void next_page();
     void OpenPage(int num );
     void OpenMyPage();
+    void Printlib();
+    void Close();
    // void MakeBookmark();
    /*
     void SeeBookmarks();// посмотреть закладки

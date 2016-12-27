@@ -2,6 +2,8 @@
 #define TREE_H
 #include "iostream"
 #include<QDebug>
+
+
 class Tree
 {
     class Book
@@ -39,13 +41,10 @@ public:
     }
     void Add(Book *B);
     void DeleteTree(Book *b);
-    void Print();
     void Search(char _name[]);
     void FillTree();
-    void her()
-    {
-       qDebug()<< "herrrrr";
-    }
+    void Write(Book *B);
+
 };
 
 #endif // TREE_H

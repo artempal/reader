@@ -150,8 +150,9 @@ background-color: rgb(255, 255, 255);</string>
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
+   <addaction name="Library"/>
    <addaction name="open_book"/>
    <addaction name="DesiredPage"/>
    <addaction name="MakeMark"/>
@@ -193,6 +194,11 @@ background-color: rgb(255, 255, 255);</string>
   <action name="ContinueReading">
    <property name="text">
     <string>Продолжить чтение</string>
+   </property>
+  </action>
+  <action name="Library">
+   <property name="text">
+    <string>Книги</string>
    </property>
   </action>
  </widget>

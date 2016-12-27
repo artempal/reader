@@ -3,6 +3,7 @@
 #include "fstream"
 #include <QDebug>
 #include "cstring"
+#include"mainwindow.h"
 
 using namespace std;
 
@@ -81,9 +82,15 @@ void Tree::DeleteTree(Book *b)
 
 }
 
-void Tree::Print()
+void Tree::Write(Book *B)
 {
-
+    ofstream n_file("D:\\Print.txt",ios_base::app);
+    if(!n_file.is_open())
+    {
+        qDebug() << "Ошибка чтения файла(7)";
+        return; // если это сделать невозможно, то завершаем функцию
+    }
+    n_file << B->author <<" "<< B->name<<"\n";
 }
 
 void Tree::FillTree()
@@ -94,14 +101,15 @@ void Tree::FillTree()
         qDebug() << "Ошибка чтения файла(6)";
         return; // если это сделать невозможно, то завершаем функцию
     }
-    int i = 0;
-    int flag = 0;
-    char c = file.get();
     char * author2 = new char [80];
     char *name2 = new char [80];
     char *way2 = new char [80];
-    while(c != EOF)
+    int i = 0;
+    int flag = 0;
+
+    while(!file.eof())
     {
+         char c = file.get();
         if (c != '#' && flag == 0) // считывание автора книги
                 {
                     author2[i] = c;
@@ -142,7 +150,7 @@ void Tree::FillTree()
                         strcpy(B->name, name2);
                         strcpy(B->way,way2);
                         Add(B);
-
+                        Write(B);
                         break;
                     }
                     default:
@@ -152,12 +160,10 @@ void Tree::FillTree()
                     }
                      i = 0;
                 }
-        c++;
     }
     delete [] author2;
     delete [] name2;
     delete [] way2;
     file.close();
     return;
-
 }

@@ -1,6 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialog.h"
+#include"tree.h"
+#include "fstream"
+
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,6 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->PageNumber->hide();
     ui->label->hide();
     ui->DesiredPage->setEnabled(false);
+
+
+
 //    Коннекторы связывают кнопки и другие действия с функциями
    connect(ui->open_book,SIGNAL(triggered()),this,SLOT(book_open())); //при нажатии пункта меню Открыть книгу сработает функция book_open
    connect(ui->open_dir,SIGNAL(triggered()),this,SLOT(dir_open())); //при нажатии пункта меню Открыть папку сработает функция dir_open
@@ -19,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
    connect(ui->next_btn,SIGNAL(clicked()),this,SLOT(next_page()));
    connect(ui->DesiredPage,SIGNAL(triggered()),this,SLOT(OpenMyPage()));
    connect(ui->MakeMark,SIGNAL(triggered),this,SLOT(MakeBookmark()));
+   connect(ui->Library,SIGNAL(triggered()),this,SLOT(Printlib()));
+   connect(ui->StopReading,SIGNAL(triggered()),this,SLOT(Close()));
+
 }
 
 
@@ -134,9 +144,34 @@ void MainWindow:: OpenPage(int num)
     file.close();
 }
 
+void MainWindow::Printlib()
+{
+    char buff[50];
+    ifstream stream("D:\\Print.txt", ios_base::in);
+    if(!stream.is_open())
+    {
+        qDebug() << "Ошибка чтения файла(8)";
+        return; // если это сделать невозможно, то завершаем функцию
+    }
+    while(!stream.eof())
+    {
+        stream.getline(buff,50);
+        ui->book_text->append(buff);
+
+    }
+
+    stream.close();
+}
 
 /*void MainWindow:: MakeBookmark()
 {
     QFile File();
 }
 */
+
+void MainWindow::Close()
+{
+    ofstream fl("D:\\Print",ios_base::trunc);
+    fl.close();
+    close();
+}
