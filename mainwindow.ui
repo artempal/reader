@@ -32,7 +32,7 @@
     </property>
     <property name="font">
      <font>
-      <family>Viner Hand ITC</family>
+      <family>MS Shell Dlg 2</family>
       <pointsize>10</pointsize>
       <weight>75</weight>
       <italic>true</italic>
@@ -127,23 +127,6 @@ background-color: rgb(255, 255, 255);</string>
      </item>
     </layout>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>926</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menu">
-    <property name="title">
-     <string>Файл</string>
-    </property>
-    <addaction name="open_dir"/>
-   </widget>
-   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="ToolBar">
    <attribute name="toolBarArea">

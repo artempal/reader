@@ -1,8 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialog.h"
+#include "mark.h"
+#include"filename.h"
 #include"tree.h"
 #include "fstream"
+#include<QFile>
+#include<QTextStream>
 
 using namespace std;
 
@@ -10,24 +14,29 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    Tree A;
+    A.FillTree();
     ui->setupUi(this);
     ui->prev_btn->setEnabled(false); //делаем кнопки вперед-назад неактивными
     ui->next_btn->setEnabled(false);
     ui->PageNumber->hide();
     ui->label->hide();
     ui->DesiredPage->setEnabled(false);
-
+    ui->open_book->setEnabled(false);
+    ui->MakeMark->setEnabled(false);
+    ui->SeeMarks->setEnabled(false);
 
 
 //    Коннекторы связывают кнопки и другие действия с функциями
    connect(ui->open_book,SIGNAL(triggered()),this,SLOT(book_open())); //при нажатии пункта меню Открыть книгу сработает функция book_open
-   connect(ui->open_dir,SIGNAL(triggered()),this,SLOT(dir_open())); //при нажатии пункта меню Открыть папку сработает функция dir_open
    connect(ui->prev_btn,SIGNAL(clicked()),this,SLOT(prev_page())); //настроим функции при нажатии на кнопки вперед-назад
    connect(ui->next_btn,SIGNAL(clicked()),this,SLOT(next_page()));
    connect(ui->DesiredPage,SIGNAL(triggered()),this,SLOT(OpenMyPage()));
    connect(ui->MakeMark,SIGNAL(triggered),this,SLOT(MakeBookmark()));
    connect(ui->Library,SIGNAL(triggered()),this,SLOT(Printlib()));
    connect(ui->StopReading,SIGNAL(triggered()),this,SLOT(Close()));
+   connect(ui->SeeMarks,SIGNAL(triggered()),this,SLOT(SeeBookmarks()));
+   connect(ui->ContinueReading,SIGNAL(triggered()),this,SLOT(ContinueReading()));
 
 }
 
@@ -40,33 +49,38 @@ MainWindow::~MainWindow()
 
 void MainWindow::book_open()
 {
-    QString dir;
-    if(file_dir.isEmpty()) //если уже выбрана папка задаем стартовую директорию файловому диалогу
-    {
-        dir = file_dir;
-    }
-    file_name = QFileDialog::getOpenFileName(0, "Выбрать книгу", dir, "*.txt");
-    if(!file_name.isNull()) OpenPage(1); //если имя файла получено - читаем первую страницу книги
+    FileName * Search = new FileName ;
+    connect(Search,SIGNAL(SendName(QString)),this,SLOT(FixName(QString)));
+    Search->show();
 }
 
-
-void MainWindow::dir_open()
+void MainWindow::FixName(const QString &str)
 {
-    file_dir = QFileDialog::getExistingDirectory(0, "Выбрать папку с книгами", "");
+    if(!str.isEmpty())
+    {
+    QString str2 = str;
+    file_name = str2.prepend("D:\\books\\").append(".txt");
+    qDebug()<<file_name ;
+    if(!file_name.isEmpty()) OpenPage(1);
+    }
+
+
+
 }
+
 
 
 void MainWindow::next_page()
 {
-    Page++;
+    Page++; // увеличиваем номер страницы
     OpenPage(Page );
-    ui->prev_btn->setEnabled(true);
+    ui->prev_btn->setEnabled(true);//доступна кнопка предыдущей страницы
 }
 
 
 void MainWindow::prev_page()
 {
-    Page--;
+    Page--;// уменьшение номера страницы
     OpenPage(Page);
     ui->next_btn->setEnabled(true);
 }
@@ -84,9 +98,12 @@ void MainWindow:: OpenPage(int num)
 {
     qDebug() << num;
     Page = num;
-    ui->PageNumber->setValue(num);
-    ui->book_text->clear();
-    if(Page==0) OpenPage(1);
+    ui->PageNumber->setValue(num);// устанавливаем номер страницы в spinbox
+    ui->book_text->clear();//очищаем поле вывода книг
+    //делаем доступными для нажатия кнопки "сделать закладку" и "посмотреть закладки"
+    ui->MakeMark->setEnabled(true);
+    ui->SeeMarks->setEnabled(true);
+    if(Page==0) OpenPage(1);// если пользователем введен 0 , то будет открыта первая страница
 
     QFile file(file_name); // создаем объект класса QFile
     if (!file.open(QIODevice::ReadOnly)) // проверяем, возможно ли открыть наш файл для чтения
@@ -97,7 +114,7 @@ void MainWindow:: OpenPage(int num)
 
     QTextStream stream(&file);
     QString str;
-    int nline = 1;
+    int nline = 1; // номер строки
 
     if(num == 1 )
     {
@@ -106,8 +123,9 @@ void MainWindow:: OpenPage(int num)
         {
          str = stream.readLine(125);// считывание строки
          ui->book_text->append(str);// вывод строки на экран
-                if(stream.atEnd())
+                if(stream.atEnd())// если конец книги
                 {
+                    // то выводим "конец книги" на экран и делаем недоступной кнопку следующей страницы
                     ui->book_text->setTextColor(Qt::red);
                     ui->book_text->append( "Конец книги");
                     ui->book_text->setTextColor(Qt::black);
@@ -119,13 +137,13 @@ void MainWindow:: OpenPage(int num)
         ui->next_btn->setEnabled(true); //делаем активной кнопку вперед
         ui->label->show();
         ui->PageNumber->show();
-        ui->DesiredPage->setEnabled(true);
+        ui->DesiredPage->setEnabled(true);// кнопка открытия любой страницы доступна
         ui->PageNumber->setValue(Page);
     }
     while( nline <= Page * MaxLine )
     {
      str = stream.readLine(125);// считывание строки
-     if(nline <= (Page - 1) * MaxLine )
+     if(nline <= (Page - 1) * MaxLine )// игнорируем предыдущие страницы
      {
          nline++;
          continue;
@@ -141,13 +159,13 @@ void MainWindow:: OpenPage(int num)
             }
         nline++;
     }
-    file.close();
+    file.close(); // закрытие файла
 }
 
 void MainWindow::Printlib()
 {
     char buff[50];
-    ifstream stream("D:\\Print.txt", ios_base::in);
+    ifstream stream("D:\\books\\Print.txt", ios_base::in);
     if(!stream.is_open())
     {
         qDebug() << "Ошибка чтения файла(8)";
@@ -161,17 +179,92 @@ void MainWindow::Printlib()
     }
 
     stream.close();
+    ui->open_book->setEnabled(true);
 }
 
-/*void MainWindow:: MakeBookmark()
+void MainWindow:: MakeBookmark()
 {
-    QFile File();
+ BookMark[MarkN] = Page;
+ BookMark[MarkN++] = '\0';
+ MarkN++;
 }
-*/
+
 
 void MainWindow::Close()
 {
-    ofstream fl("D:\\Print",ios_base::trunc);
+    ofstream fl("D:\\books\\Print.txt",ios_base::trunc);
+    if(!fl.is_open())
+    {
+        qDebug() << "Ошибка чтения файла(9)";
+        return; // если это сделать невозможно, то завершаем функцию
+    }
     fl.close();
+    SaveBook();
     close();
+}
+
+void MainWindow::SaveBook()
+{
+    int i = 0;
+    ofstream file("D:\\books\\saved.txt");
+     if(!file.is_open())
+    {
+        qDebug() << "Ошибка чтения файла(10)";
+        return; // если это сделать невозможно, то завершаем функцию
+    }
+    file<<Page<<'\n';
+    while(1)
+    {
+        if(BookMark[i] == '\0')
+        {
+            BookMark[i] = 0;
+            file<<(BookMark[i])<< '\n';
+            break;
+        }
+        file<< BookMark[i]<<'\n';
+        i++;
+    }
+    file.close();
+
+}
+
+void MainWindow::LoadBook()
+{
+    int i = 0;
+    ifstream file("D:\\books\\saved.txt");
+      if(!file.is_open())
+    {
+        qDebug() << "Ошибка чтения файла(11)";
+        return; // если это сделать невозможно, то завершаем функцию
+    }
+    file >> Page;
+
+    while(1)
+    {
+        file >> BookMark[i];
+        if(BookMark[i] == 0)
+            break;
+        i++;
+    }
+    file.close();
+}
+
+void MainWindow::SeeBookmarks()
+{
+    Mark *M = new Mark(this,&file_name);
+    M->show();
+}
+
+void MainWindow::ContinueReading()
+{
+    QFile file("D:\\books\\saved.txt");
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Ошибка чтения файла(14)";
+        return; // если это сделать невозможно, то завершаем функцию
+    }
+    QTextStream stream(&file);
+    stream>> Page;
+    file.close();
+    OpenPage(Page);
 }

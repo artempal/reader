@@ -46,10 +46,10 @@ void Tree::Add(Book *B)
     }
 }
 
-void Tree::Search(char _name[])
+Book *Tree::Search(char _name[])
 {
     if(Root == NULL)
-        return;
+        qDebug()<<"Пустая библиотека" ;
     Book * Current = Root;
     while(Current != NULL)
     {
@@ -65,10 +65,10 @@ void Tree::Search(char _name[])
             continue;
         }
         if(Comp == 0)
-            return ;// надо как-то вернутть эту книгу
+            return Current;// надо как-то вернутть эту книгу
 
     }
-    return ;
+    return NULL ;
 }
 
 void Tree::DeleteTree(Book *b)
@@ -84,7 +84,7 @@ void Tree::DeleteTree(Book *b)
 
 void Tree::Write(Book *B)
 {
-    ofstream n_file("D:\\Print.txt",ios_base::app);
+    ofstream n_file("D:\\books\\Print.txt",ios_base::app);
     if(!n_file.is_open())
     {
         qDebug() << "Ошибка чтения файла(7)";
@@ -95,7 +95,7 @@ void Tree::Write(Book *B)
 
 void Tree::FillTree()
 {
-    ifstream file ("D:\\test.txt");
+    ifstream file ("D:\\books\\test.txt");
     if(!file.is_open())
     {
         qDebug() << "Ошибка чтения файла(6)";

@@ -2,7 +2,6 @@
 #include "ui_dialog.h"
 
 
-int Page2 = 1;
 int const MaxLine2 = 25;
 
 Dialog::Dialog(QWidget *parent, QString *in_file_name) :
@@ -13,7 +12,6 @@ Dialog::Dialog(QWidget *parent, QString *in_file_name) :
      qDebug() << file_name;
     ui2->setupUi(this);
     connect(ui2->Close,SIGNAL(clicked()),this, SLOT (close()));
-    //connect(ui2->spinBox,SIGNAL(valueChanged(int)),this, SLOT (OpenPage(int)));
     connect(ui2->Ok,SIGNAL(clicked()),this,SLOT(SendPage()));
 
     CountPages();

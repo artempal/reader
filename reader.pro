@@ -15,11 +15,17 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     dialog.cpp \
-    tree.cpp
+    tree.cpp \
+    filename.cpp \
+    mark.cpp
 
 HEADERS  += mainwindow.h \
     dialog.h \
-    tree.h
+    tree.h \
+    filename.h \
+    mark.h
 
 FORMS    += mainwindow.ui \
-    dialog.ui
+    dialog.ui \
+    filename.ui \
+    mark.ui

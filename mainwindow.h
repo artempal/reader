@@ -2,10 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QFileDialog>
 #include <QDebug>
 #include <QFile>
-#include <QByteArray>
 #include <QString>
 
 namespace Ui {
@@ -21,13 +19,16 @@ public:
     ~MainWindow();
     int Page = 1;
     int const MaxLine = 25;
-    int Mark = 1;
+    int MarkN = 1;
 private:
     QString file_name; //имя открытого файла
-    QString file_dir; //имя папки
     QString book_text; //текст открытой книги
     Ui::MainWindow *ui;
     int BookMark[200];
+    void SaveBook();//  сохранение книги
+    void LoadBook();// загрузка книги
+    void MakeBookmark();
+
 private slots:
     void dir_open(); //функция открытия папки
     void book_open(); //функция открытия книги
@@ -37,11 +38,10 @@ private slots:
     void OpenMyPage();
     void Printlib();
     void Close();
-   // void MakeBookmark();
-   /*
+    void FixName(const QString &str);
     void SeeBookmarks();// посмотреть закладки
-    void SaveLastPlaceReading();// запомнить последнее место чтения
-    void ContinueReading();// продолжить чтение */
+    void ContinueReading();// продолжить чтение
+
 };
 
 #endif // MAINWINDOW_H

@@ -1,12 +1,7 @@
 #ifndef DIALOG_H
 #define DIALOG_H
-
-#include <QDialog>
-#include <QMainWindow>
 #include <QFileDialog>
 #include <QDebug>
-#include <QFile>
-#include <QByteArray>
 #include <QString>
 
 namespace Ui {
